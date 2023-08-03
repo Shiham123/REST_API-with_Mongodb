@@ -1,7 +1,7 @@
-const express = require('express'),
-  app = express();
+const app = require('./app'),
+  config = require('./config/config');
 
-const port = 4000,
+const port = config.app.port,
   address = '127.0.0.1';
 
 app.listen(port, () => {
