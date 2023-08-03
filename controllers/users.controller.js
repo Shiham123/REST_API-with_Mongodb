@@ -3,12 +3,22 @@ const { v4: uuidv4 } = require('uuid');
 
 const usersModal = require('../models/users.modal');
 
-const getAllUsers = (request, response) => {
-  response.status(200).json({ message: 'all users' });
+const getAllUsers = async (request, response) => {
+  try {
+    const users = await usersModal.find();
+    response.status(200).json(users);
+  } catch (error) {
+    response.status(500).send(error.message);
+  }
 };
 
-const getOneUser = (request, response) => {
-  response.status(201).json({ message: 'get one users' });
+const getOneUser = async (request, response) => {
+  try {
+    const oneUser = await usersModal.findOne({ id: request.params.id });
+    response.status(201).json(oneUser);
+  } catch (error) {
+    response.status(500).send(error.message);
+  }
 };
 
 const createUsers = async (request, response) => {
@@ -25,12 +35,15 @@ const createUsers = async (request, response) => {
   }
 };
 
-const updateUsers = (request, response) => {
-  response.status(203).json({ message: 'update the all users' });
-};
+const updateUsers = (request, response) => {};
 
-const deleteUsers = (request, response) => {
-  response.status(204).json({ message: 'delete users' });
+const deleteUsers = async (request, response) => {
+  try {
+    await usersModal.deleteOne({ id: request.params.id });
+    response.status(205).json({ message: 'user is deleted' });
+  } catch (error) {
+    response.status(500).send(error.message);
+  }
 };
 
 module.exports = {
