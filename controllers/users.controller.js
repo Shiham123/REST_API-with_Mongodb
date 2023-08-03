@@ -35,7 +35,18 @@ const createUsers = async (request, response) => {
   }
 };
 
-const updateUsers = (request, response) => {};
+const updateUsers = async (request, response) => {
+  try {
+    const oneUser = await usersModal.findOne({ id: request.params.id });
+    oneUser.name = request.body.name;
+    oneUser.age = Number(request.body.age);
+
+    await oneUser.save();
+    response.status(204).send(oneUser);
+  } catch (error) {
+    response.status(500).send({ message: error.message });
+  }
+};
 
 const deleteUsers = async (request, response) => {
   try {
